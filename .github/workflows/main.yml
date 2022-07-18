@@ -44,5 +44,8 @@ jobs:
               docker pull $image
               myTag=${{ secrets.DOCKER_UNAME }}/gcr/${image##*/}
               docker tag $image $myTag
+              echo **********************
+              echo $myTag
+              echo **********************
               docker push $myTag
           done

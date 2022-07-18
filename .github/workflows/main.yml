@@ -42,10 +42,10 @@ jobs:
           for image in $images
           do
               docker pull $image
-              myTag=${{ secrets.DOCKER_UNAME }}/gcr/${image##*/}
+              myTag=${{ secrets.DOCKER_UNAME }}/${image##*/}
               docker tag $image $myTag
-              echo **********************
+              echo "**********************"
               echo $myTag
-              echo **********************
+              echo "**********************"
               docker push $myTag
           done

@@ -1,0 +1,48 @@
+name: sync-kubeadm-images
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  schedule: 
+    - cron: '0 0 1 * *'
+  workflow_dispatch:
+  
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out repository
+      - name: checkout branch
+        uses: actions/checkout@v3
+
+      # login docker
+      - name: login to dockerhub
+        uses: docker/login-action@v2.0.0
+        with:
+          username: ${{ secrets.DOCKER_UNAME }}
+          password: ${{ secrets.DOCKER_PASSWD }}
+          
+      - name: install kubeadm
+        shell: bash
+        run: |
+          # 安装kubeadm,每次安装最新的，拉取最新的镜像同步
+          sudo apt-get update
+          sudo apt-get install -y apt-transport-https ca-certificates curl
+          sudo curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
+          echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+          sudo apt-get update
+          sudo apt-get install -y kubeadm `kubeadm config images list`
+
+          # pull镜像、tag、push
+          images=`kubeadm config images list`
+
+          for image in $images
+          do
+              docker pull $image
+              myTag=${{ secrets.DOCKER_UNAME }}/gcr/${image##*/}
+              docker tag $image $myTag
+              docker push $myTag
+          done

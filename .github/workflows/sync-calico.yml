@@ -18,10 +18,10 @@ jobs:
           username: ${{ secrets.DOCKER_UNAME }}
           password: ${{ secrets.DOCKER_PASSWD }}
           
-      - name: install kubeadm
+      - name: pull、tag、push
         shell: bash
         run: |
-          $image="quay.io/tigera/operator:v1.27.7"
+          image="quay.io/tigera/operator:v1.27.7"
           docker pull $image
           myTag=${{ secrets.DOCKER_UNAME }}/${image##*/}
           docker tag $image $myTag

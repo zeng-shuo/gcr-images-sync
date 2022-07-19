@@ -1,0 +1,31 @@
+name: sync-calico
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      # Checks-out repository
+      - name: checkout branch
+        uses: actions/checkout@v3
+
+      # login docker
+      - name: login to dockerhub
+        uses: docker/login-action@v2.0.0
+        with:
+          username: ${{ secrets.DOCKER_UNAME }}
+          password: ${{ secrets.DOCKER_PASSWD }}
+          
+      - name: install kubeadm
+        shell: bash
+        run: |
+          $image="quay.io/tigera/operator:v1.27.7"
+          docker pull $image
+          myTag=${{ secrets.DOCKER_UNAME }}/${image##*/}
+          docker tag $image $myTag
+          echo "**********************"
+          echo $myTag
+          echo "**********************"
+          docker push $myTag

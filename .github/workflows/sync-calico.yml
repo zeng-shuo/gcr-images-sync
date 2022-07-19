@@ -23,7 +23,7 @@ jobs:
         run: |
           image="quay.io/tigera/operator:v1.27.7"
           docker pull $image
-          myTag=${{ secrets.DOCKER_UNAME }}/${image##*/}
+          myTag=${{ secrets.DOCKER_UNAME }}/calico-operator:v1.27.7
           docker tag $image $myTag
           echo "**********************"
           echo $myTag

@@ -22,10 +22,16 @@ jobs:
         shell: bash
         run: |
           image="registry.k8s.io/ingress-nginx/controller:v1.3.0"
+          need1="registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.1.1"
           docker pull $image
+          docker pull $need1
           myTag=${{ secrets.DOCKER_UNAME }}/ingress-nginx-controller:v1.3.0
+          needTag1=${{ secrets.DOCKER_UNAME }}/ingress-nginx-webhook-certgen:v1.1.1
           docker tag $image $myTag
+          docker tag $need1 $needTag1
           echo "**********************"
           echo $myTag
+          echo $needTag1
           echo "**********************"
           docker push $myTag
+          docker push $needTag1

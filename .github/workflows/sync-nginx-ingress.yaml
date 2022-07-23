@@ -1,4 +1,4 @@
-name: sync-calico
+name: sync-nginx-ingress
 
 on:
   workflow_dispatch:

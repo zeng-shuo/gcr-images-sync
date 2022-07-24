@@ -45,3 +45,8 @@ jobs:
           docker tag $image $myTag
           docker push $myTag
 
+          image="k8s.gcr.io/defaultbackend-amd64:1.5"
+          docker pull $image
+          myTag=${{ secrets.DOCKER_UNAME }}/defaultbackend-amd64:1.5
+          docker tag $image $myTag
+          docker push $myTag

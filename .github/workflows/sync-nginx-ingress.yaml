@@ -27,21 +27,21 @@ jobs:
           docker tag $image $myTag
           docker push $myTag
         
-          $image="registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.1.1"
+          image="registry.k8s.io/ingress-nginx/kube-webhook-certgen:v1.1.1"
           docker pull $image
-          $myTag=${{ secrets.DOCKER_UNAME }}/ingress-nginx-webhook-certgen:v1.1.1
+          myTag=${{ secrets.DOCKER_UNAME }}/ingress-nginx-webhook-certgen:v1.1.1
           docker tag $image $myTag
           docker push $myTag
           
-          $image="quay.io/metallb/controller:v0.13.4"
+          image="quay.io/metallb/controller:v0.13.4"
           docker pull $image
-          $myTag=${{ secrets.DOCKER_UNAME }}/metallb-controller:v0.13.4
+          myTag=${{ secrets.DOCKER_UNAME }}/metallb-controller:v0.13.4
           docker tag $image $myTag
           docker push $myTag
           
-          $image="quay.io/metallb/speaker:v0.13.4"
+          image="quay.io/metallb/speaker:v0.13.4"
           docker pull $image
-          $myTag=${{ secrets.DOCKER_UNAME }}/metallb-speaker:v0.13.4
+          myTag=${{ secrets.DOCKER_UNAME }}/metallb-speaker:v0.13.4
           docker tag $image $myTag
           docker push $myTag
 
